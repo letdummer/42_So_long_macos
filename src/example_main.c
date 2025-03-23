@@ -1,5 +1,5 @@
 #include "../includes/so_long.h"
-#include "../mlx/minilibx-linux/mlx.h"
+#include "../minilibx-linux/mlx.h"
 
 #include "../libft/libft/libft.h"
 #include "../libft/ft_printf/libftprintf.h"
@@ -20,7 +20,7 @@ gcc src/so_long.c -L./libft/ft_printf -lftprintf -L./mlx/minilibx_macos -lmlx -f
 // esta funcao vai ser chamada quando uma tecla for pressionada 
 // dentro da janela que esta aberta
 // usar o keysym torna o codigo mais portavel, pois nao depende do arranjo do teclado  
-int	handle_input(int key, t_mlx_data *data)
+int	handle_input(int key, t_game *game)
 {
 	if (key == 53)	//53 is ESC key on macOS / XK_Escape is the ESC key in linux
 	{

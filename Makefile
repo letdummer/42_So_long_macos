@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/03/23 17:21:58 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/03/23 23:00:37 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,35 +20,41 @@ UNAME_S := $(shell uname -s)
 #									FILES  				     				   #
 #------------------------------------------------------------------------------#
 
-SRC_DIR		= ./src
-OBJ_DIR		= ./obj
-INCLUDES	= ./includes
+SRC_DIR		= src/
+OBJ_DIR		= .build/
+INCLUDES	= includes/
 HEADERS = $(INCLUDES)/so_long.h
 
-SRC_FILES	= 
+SRC_FILES	= so_long.c		validate_map.c		handle_errors.c		\
+	render_images.c	
 
 
 SRC			= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+#OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+OBJ			= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 
 #	Librarys
 
 LIBFT_DIR	= libft
 LIBFT_LIB	= $(LIBFT_DIR)/libft.a
 
-FT_PRINTF_DIR	= libft/ft_printf
-FT_PRINTF_LIB	= $(FT_PRINTF_DIR)/libftprintf.a
+#FT_PRINTF_DIR	= libft/ft_printf
+#FT_PRINTF_LIB	= $(FT_PRINTF_DIR)/libftprintf.a
 
-MLX_DIR		=./minilibx-linux/
-MLX			= $(MLX_DIR)/libmlx_Linux.a
-MLXFLAGS	= -L$(MLX_DIR) -lmlx
+
+#MLX_DIR		= minilibx-linux
+#MLXFLAGS	= -L$(MLX_DIR) -lmlx
+
+MLX_DIR		= minilibx_opengl_20191021
+MLX			= $(MLX_DIR)/libmlx.a
+MLX_FLAGS	= -framework OpenGL -framework AppKit -L$(MLX_DIR) -lmlx
 
 #------------------------------------------------------------------------------#
 #								COMPILATION 		  						   #
 #------------------------------------------------------------------------------#
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror
 DFLAGS	= -g
 RM= rm -f
 
@@ -59,8 +65,8 @@ ifeq ($(UNAME_S),Linux)
 endif
 
 ifeq ($(UNAME_S),Darwin)
-	CFLAGS += -I/opt/X11/include
-	MLXFLAGS += -L/opt/X11/lib -lX11 -lX11 -lXext -lXrandr -lXcursor -lXinerama -lXxf86vm -lXrender -lX11-xcb -lXfixes
+	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+	CFLAGS += -I$(MLX_DIR)
 endif
 
 
@@ -71,11 +77,11 @@ endif
 
 all: deps $(NAME)
 
-$(NAME): $(MLX) $(OBJ) $(LIBFT_LIB) $(FT_PRINTF_LIB)
+$(NAME): $(MLX) $(OBJ) $(LIBFT_LIB)
 	@make -C $(MLX_DIR) > /dev/null 2>&1
 	$(call success, "All files have been compiled ✅")
 	$(call text, "Creating library $(NAME) [...]")
-	@$(CC) $(CFLAGS) $(OBJ) -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf $(MLX_FLAGS) -o $(NAME)
+	@$(CC) $(CFLAGS) -I$(INCLUDES) $(OBJ) -L$(LIBFT_DIR) -lft $(MLX_FLAGS) -o $(NAME)
 	@clear
 	$(call success, "Build complete: $(NAME) 📚 ✨")       
 
@@ -86,24 +92,34 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 
 $(LIBFT_LIB) : $(LIBFT_DIR)
 	$(call text, "COMPILING LIBFT")
-	@make -C $(LIBFT_DIR) --silent
+	@make -C $(LIBFT_DIR) all --silent
+	@make -C $(LIBFT_DIR) bonus --silent
+	@make -C $(LIBFT_DIR) extra --silent
 
-$(FT_PRINTF_LIB) : $(FT_PRINTF_DIR)
-	$(call text, "COMPILING FT_PRINTF")
-	@make -C $(FT_PRINTF_DIR) --silent
+#$(FT_PRINTF_LIB) : $(FT_PRINTF_DIR)
+#	$(call text, "COMPILING FT_PRINTF")
+#	@make -C $(FT_PRINTF_DIR) --silent
+
+#$(MLX):
+#	@if [ ! -d "$(MLX_DIR)" ]; then \
+#		echo "Getting minilibx"; \
+#		git clone https://github.com/42Paris/minilibx-linux.git > /dev/null 2>&1; \
+#	fi
+#	@$(MAKE) -C $(MLX_DIR) --silent
 
 $(MLX):
 	@if [ ! -d "$(MLX_DIR)" ]; then \
-		echo "Getting minilibx"; \
-		git clone https://github.com/42Paris/minilibx-linux.git > /dev/null 2>&1; \
+		echo "Getting minilibx for macOS"; \
+		curl -O https://cdn.intra.42.fr/document/document/20826/minilibx_opengl.tgz && \
+		tar -xzf minilibx_opengl.tgz && \
+		rm -f minilibx_opengl.tgz && \
+		mv minilibx_opengl_20191021 $(MLX_DIR); \
 	fi
-	@$(MAKE) -C $(MLX_DIR) --silent
+	@$(MAKE) -C $(MLX_DIR) > /dev/null 2>&1
 
-deps: get_libft libft_extra
-	@echo "[$(GREEN_BOLD)All deps installed!$(RESET)]"
-
-libft_extra:
+deps: get_libft
 	@make -C $(LIBFT_DIR) extra --silent
+	@echo "[$(GREEN_BOLD)All deps installed!$(RESET)]"
 
 get_libft:
 	@if [ ! -d "$(LIBFT_DIR)" ]; then \
@@ -123,8 +139,8 @@ clean:
 	$(call text, "Removing object files [...]")
 	@$(RM) $(OBJ)
 	@make -C $(LIBFT_DIR) clean
-	@make -C $(FT_PRINTF_DIR) clean
-	@rm -rf $(MLX_DIR)
+#	@make -C $(FT_PRINTF_DIR) clean
+#	@rm -rf $(MLX_DIR)
 	$(call success, "		Object files cleaned. 💣"); \
 
 # clean the .o objects, the objs folder and the project file
@@ -132,8 +148,9 @@ fclean: clean
 	$(call text, "Removing files [...]")
 	@$(RM) $(NAME)
 	@$(MAKE) --silent -C $(LIBFT_DIR) fclean
-	@$(MAKE) --silent -C $(FT_PRINTF_DIR) fclean
-	@rm -rf $(MLX_DIR)
+#	@$(MAKE) --silent -C $(FT_PRINTF_DIR) fclean
+#	@rm -rf $(lIBFT_DIR)
+#	@rm -rf $(MLX_DIR)
 	$(call highligth_bold, "FULL CLEANING DONE! ✅")
 
 #	refresh the project
