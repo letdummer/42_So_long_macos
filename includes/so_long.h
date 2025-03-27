@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/03/23 21:46:45 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/03/26 18:39:14 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,29 @@ typedef struct s_game
 	int		win;
 }	t_game;
 
-//	MAIN
-void	ft_initialize(t_game *game);
-int	handle_input(int key, t_game *game);
-
-// HANDLE_ERRORS
-// Insert a message, do not need to add '\n'
+// HANDLE_ERRORS.C
 void	ft_error_message(char *message);
 
+// INIT_GAME.C
+void	ft_init_wind(t_game *game);
+int	handle_input(int key, t_game *game);
 
-//	RENDER_IMAGES
+// INIT_MAP.C
+void	ft_map_init(t_game *game, char *map_path);
+void	ft_get_map_dimensions(t_game *game, const char *map_path);
+int	ft_count_lines(char *map_path);
+void ft_allocate_map_memory(t_game *game);
+void ft_fill_map_content(t_game *game, const char *map_path);
+
+// RENDER_IMAGES.C
 void	ft_render_images(t_game *game);
 void	ft_free_images(t_game *game);
 
-//	VALIDATE_MAP
+// VALIDATE_MAP.C
 void	ft_validate_map_extension(char *file);
-void	ft_validate_map_size();
+
+
+
+
 
 #endif

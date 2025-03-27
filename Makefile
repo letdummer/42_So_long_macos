@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/03/23 23:00:37 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/03/26 13:10:43 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,13 @@ OBJ_DIR		= .build/
 INCLUDES	= includes/
 HEADERS = $(INCLUDES)/so_long.h
 
-SRC_FILES	= so_long.c		validate_map.c		handle_errors.c		\
-	render_images.c	
+SRC_FILES	=	handle_errors.c	\
+				init_game.c		\
+				init_map.c		\
+				render_images.c	\
+				so_long.c		\
+				validate_map.c	\
+				
 
 
 SRC			= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
