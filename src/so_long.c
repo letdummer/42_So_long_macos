@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   so_long.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/23 21:27:28 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/03/26 15:06:52 by ldummer-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/so_long.h"
 /* #include "../minilibx-linux/mlx.h"
 #include "../libft/libft/libft.h"
@@ -28,33 +16,40 @@ gcc src/so_long.c -L./libft/ft_printf -lftprintf -L./minilibx-linux -lmlx -frame
 
 int	main(int ac, char **av)
 {
-	t_game		game;
+	t_game		*game;
 	char		*map_path = av[1];
+	//int			fd;
 	
-	// CHECK de argumentos
 	if(ac != 2)
-		ft_error_message("Usage: ./so_long ./maps/map.ber");
-	
-	// CHECK se o arquivo é .ber 
+		ft_error_message("Usage: ./so_long ./maps/valid/map.ber");
+		
 	ft_validate_map_extension(map_path);
 	
-	// INIT variaveis a zero
-	// CHECK altura e largura do mapa
-	// ALLOCAR MEMORIA para o mapa
-	ft_bzero(&game, sizeof(game));
-	ft_map_init(map_path, &game);
+/* 	fd = open(av[1], O_RDONLY);
+	if (fd < 0)
+		ft_error_message("Cannot open map file");
+	close(fd); */
 
-	// CHECK demais condicoes: qtd elementos, paredes, caminho valido
+
+	game = ft_init_game();
+	if (!game)
+		ft_error_message("Failed to initialize game.");
 	
+	if (ft_map_init(game, av[1]) != 0)
+	{
+		ft_cleanup(game);
+		ft_error_message("Map initialization failed");
+	}
 
-	// INIT janela grafica
-	ft_init_wind(&game);
-
-
-	mlx_key_hook(game.mlx_wind, handle_input, &game);
-	mlx_loop(game.mlx_connection);
+	ft_printf("Debug: Starting game initialization\n");
+	if (ft_validate_game_init(game) != 0)
+	{
+		ft_cleanup(game);
+		ft_error_message("Game initialization failed.");
+	}
 	
-	//mlx_destroy_display(game.mlx_connection);
-	ft_free_images(&game);
-	free(game.mlx_connection);
+	mlx_key_hook(game->mlx_wind, handle_input, game);
+	mlx_loop(game->mlx_connection);
+	ft_cleanup(game);
+	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/03/26 13:10:43 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/04/11 20:35:04 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,17 @@ UNAME_S := $(shell uname -s)
 #									FILES  				     				   #
 #------------------------------------------------------------------------------#
 
-SRC_DIR		= src/
-OBJ_DIR		= .build/
-INCLUDES	= includes/
+SRC_DIR		= src
+OBJ_DIR		= .build
+INCLUDES	= includes
 HEADERS = $(INCLUDES)/so_long.h
 
-SRC_FILES	=	handle_errors.c	\
-				init_game.c		\
+SRC_FILES	=	init_game.c		\
 				init_map.c		\
+				init_window.c	\
 				render_images.c	\
 				so_long.c		\
+				utils.c			\
 				validate_map.c	\
 				
 
@@ -59,7 +60,7 @@ MLX_FLAGS	= -framework OpenGL -framework AppKit -L$(MLX_DIR) -lmlx
 #------------------------------------------------------------------------------#
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -g -Wall -Wextra -Werror
 DFLAGS	= -g
 RM= rm -f
 
@@ -97,8 +98,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
 
 $(LIBFT_LIB) : $(LIBFT_DIR)
 	$(call text, "COMPILING LIBFT")
-	@make -C $(LIBFT_DIR) all --silent
-	@make -C $(LIBFT_DIR) bonus --silent
 	@make -C $(LIBFT_DIR) extra --silent
 
 #$(FT_PRINTF_LIB) : $(FT_PRINTF_DIR)
@@ -123,7 +122,6 @@ $(MLX):
 	@$(MAKE) -C $(MLX_DIR) > /dev/null 2>&1
 
 deps: get_libft
-	@make -C $(LIBFT_DIR) extra --silent
 	@echo "[$(GREEN_BOLD)All deps installed!$(RESET)]"
 
 get_libft:
@@ -152,7 +150,7 @@ clean:
 fclean: clean
 	$(call text, "Removing files [...]")
 	@$(RM) $(NAME)
-	@$(MAKE) --silent -C $(LIBFT_DIR) fclean
+	@$(MAKE) -C $(LIBFT_DIR) fclean --silent
 #	@$(MAKE) --silent -C $(FT_PRINTF_DIR) fclean
 #	@rm -rf $(lIBFT_DIR)
 #	@rm -rf $(MLX_DIR)

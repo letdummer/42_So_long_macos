@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/03/26 18:39:14 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/04/12 18:03:42 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,31 @@ typedef struct s_game
 	int		win;
 }	t_game;
 
-// HANDLE_ERRORS.C
+// UTILS.C
 void	ft_error_message(char *message);
+void	ft_cleanup(t_game *game);
+
 
 // INIT_GAME.C
-void	ft_init_wind(t_game *game);
+t_game	*ft_init_game(void);
+
+
+//	INIT_WINDOW.C
+int	ft_init_wind(t_game *game);
 int	handle_input(int key, t_game *game);
 
 // INIT_MAP.C
-void	ft_map_init(t_game *game, char *map_path);
-void	ft_get_map_dimensions(t_game *game, const char *map_path);
-int	ft_count_lines(char *map_path);
-void ft_allocate_map_memory(t_game *game);
-void ft_fill_map_content(t_game *game, const char *map_path);
+int		ft_validate_game_init(t_game *game);
+int		ft_map_init(t_game *game, char *map_path);
+//int		ft_get_map_dimensions(t_game *game, char *map_path);
+//int		ft_fill_map_content(t_game *game, const char *map_path);
+int		ft_allocate_map_memory(t_game *game);
+
+
+char    **ft_read_map_file(char *map_path, size_t *height, size_t *width);
+int     ft_validate_map_content(char **map, size_t height, size_t width);
+int     ft_copy_map_to_game(t_game *game, char **temp_map);
+void    ft_free_temp_map(char **temp_map);
 
 // RENDER_IMAGES.C
 void	ft_render_images(t_game *game);

@@ -5,51 +5,62 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/26 12:14:10 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/03/26 15:05:12 by ldummer-         ###   ########.fr       */
+/*   Created: 2025/04/11 14:41:43 by ldummer-          #+#    #+#             */
+/*   Updated: 2025/04/11 20:29:28 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/so_long.h"
+#include "so_long.h"
 
-
-void	ft_init_wind(t_game *game)
-{	
-	game->mlx_connection = mlx_init();
-	if (game->mlx_connection == NULL)
-		ft_error_message("Error on the MLX");
-//		return(MLX_ERROR);
-	
-/* 	game->mlx_wind = mlx_new_window(game->mlx_connection,
-		500, 500, "so_long"); */
-	game->mlx_wind = mlx_new_window(game->mlx_connection,
-		WIND_WIDTH, WIND_HEIGHT, "so_long");
-	if (game->mlx_wind == NULL)
-	{
-		//mlx_destroy_display(game->mlx_connection);
-		free(game->mlx_connection);
-		//return(MLX_ERROR);
-	}
-
-	void	*img;
-
-	img = mlx_new_image(game->mlx_connection, 500, 500);
-	if (img == NULL)
-		ft_error_message("Error creating the image.");
-	mlx_put_image_to_window(game->mlx_connection, game->mlx_wind, img, 0, 0);
-}
-
-int	handle_input(int key, t_game *game)
+/* t_game	*ft_init_game(void)
 {
-	if (key == KEY_ESC)	//53 is ESC key on macOS / XK_Escape is the ESC key in linux
-	{
-		ft_printf("The %d key (ESC) has been pressed\n", key);
-		mlx_destroy_window(game->mlx_connection, game->mlx_wind);
-		//mlx_destroy_display(game->mlx_connection);
-		free(game->mlx_connection);
-		exit(1);
-	}
-	ft_printf("The %d key has been pressed\n", key);
-	return(0);
+	t_game	*game;
+
+	game = (t_game *)ft_calloc(1, sizeof(t_game));
+	if (!game)
+		ft_error_message("Memory allocation failed for game structure.");
+	return (game);
+} */
+static void init_map_values(t_map *map)
+{
+    // Initialize map structure with default values
+    map->width = 0;
+    map->height = 0;
+    map->grid = NULL;
+    map->walls = 0;
+    map->floor = 0;
+    map->collectibles = 0;
+    map->exits = 0;
+    map->player_pos_x = -1;
+    map->player_pos_y = -1;
 }
 
+t_game *ft_init_game(void)
+{
+    t_game *game;
+    
+    ft_printf("Debug: Initializing game structure\n");
+    game = (t_game *)ft_calloc(1, sizeof(t_game));
+    if (!game)
+        return (NULL);
+    
+    // Initialize map values using helper function
+    init_map_values(&game->map);
+    
+    // Initialize game state values
+    game->mlx_connection = NULL;
+    game->mlx_wind = NULL;
+    game->collected_items = 0;
+    game->moves = 0;
+    game->game_over = 0;
+    game->win = 0;
+    
+    // Initialize image pointers to NULL
+    game->images.wall = NULL;
+    game->images.floor = NULL;
+    game->images.collectible = NULL;
+    game->images.exit = NULL;
+    game->images.player = NULL;
+    
+    return (game);
+}
