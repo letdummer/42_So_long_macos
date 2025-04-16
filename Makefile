@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/03/26 13:10:43 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/04/15 22:15:19 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ HEADERS = $(INCLUDES)/so_long.h
 SRC_FILES	=	handle_errors.c	\
 				init_game.c		\
 				init_map.c		\
+				init_window.c		\
 				render_images.c	\
 				so_long.c		\
 				validate_map.c	\
@@ -59,7 +60,7 @@ MLX_FLAGS	= -framework OpenGL -framework AppKit -L$(MLX_DIR) -lmlx
 #------------------------------------------------------------------------------#
 
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -g -Wall -Wextra -Werror
 DFLAGS	= -g
 RM= rm -f
 
