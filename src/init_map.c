@@ -1,13 +1,13 @@
 #include "../includes/so_long.h"
 
-void    gnl_clear(int fd);
 
 void	ft_map_init(t_game *game, char *map_path)
 {
 	ft_get_map_dimensions(game, map_path);
 	ft_allocate_map_memory(game);
 	ft_fill_map_content(game, map_path);
-	printf("all map verifications have been done!\n");
+	ft_validate_map_content(game);
+	//ft_set_player_position(game);
 }
 
 void	ft_get_map_dimensions(t_game *game, char *map_path)
@@ -21,12 +21,9 @@ void	ft_get_map_dimensions(t_game *game, char *map_path)
 	if (!(str = get_next_line(fd)))
 		ft_error_message("Empty file.");
 	game->map.width = ft_strlen(str) - 1;
-	printf("map width %d\n",game->map.width);
 	gnl_clear(fd);
 	close(fd);
 	game->map.height = ft_count_lines(map_path);
-	printf("map height in map_dimensions %d\n",game->map.height);
-
 	if (game->map.height < 3)
 		ft_error_message("Map is too small.");
 	free(str);
@@ -47,14 +44,11 @@ int	ft_count_lines(char *map_path)
 		ft_error_message("Empty file.");
 	while(str)
 	{
-		printf("line length %d\n", line_length);
-		printf("str %s\n", str);
 		line_length++;
 		free(str);
 		str = get_next_line(fd);
 	}
 	close(fd);
-	printf("total length %d\n", line_length);
 	return(line_length);
 }
 
@@ -90,15 +84,9 @@ void ft_fill_map_content(t_game *game, char *map_path)
 	fd = open(map_path, O_RDONLY);
 	if (fd < 0)
 		ft_error_message("Error while reading the map content.");
-	
-	
-		printf("end\n");
-	
-		printf("map height in map content %d\n",game->map.height);
 		while (i < game->map.height)
 		{
-			str = get_next_line(fd);
-			printf("STR int map_content %s\n", str);
+		str = get_next_line(fd);
 		if (!str && i == 0)
 			ft_error_message("Empty file.");
 		if (!str)
@@ -107,7 +95,6 @@ void ft_fill_map_content(t_game *game, char *map_path)
 			ft_error_message("Map must be rectangular.");
 		ft_strlcpy(game->map.grid[i], str, game->map.width + 1);
 		free(str);
-		printf("valor de i %d\n", i);
 		i++;
 	}
 	str = get_next_line(fd);
@@ -119,16 +106,3 @@ void ft_fill_map_content(t_game *game, char *map_path)
 	close(fd);
 }
 
-void    gnl_clear(int fd)
-{
-    char    *temp;
-
-    if (fd < 0)
-        return;
-    temp = get_next_line(fd);
-    while (temp)
-    {
-        free(temp);
-        temp = get_next_line(fd);
-    }
-}

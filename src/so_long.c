@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 21:27:28 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/04/14 17:08:39 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/04/16 16:09:10 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	main(int ac, char **av)
 
 
 	mlx_key_hook(game->mlx_wind, handle_input, game);
+	mlx_hook(game->mlx_wind, 17, 0, handle_close, game);	// lida com fechar a janela no X
+	//    mlx_hook(game->mlx_wind, 33, 1L<<17, handle_close, game); // Linux
 	mlx_loop(game->mlx_connection);
 	
 	//mlx_destroy_display(game->mlx_connection);

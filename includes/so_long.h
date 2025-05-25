@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/04/14 17:13:51 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/05/24 20:46:49 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@
 # define END_COLOR "\033[0;39m"
 
 // Key codes for Mac
-# define KEY_ESC 53
-# define KEY_W 13
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
+# define KEY_ESC	53
+# define KEY_W		13
+# define KEY_A		0
+# define KEY_S		1
+# define KEY_D		2
 
 // map element definition
-# define MAP_WALL       '1'
-# define MAP_FLOOR      '0'
-# define MAP_COLLECT    'C'
-# define MAP_EXIT       'E'
-# define MAP_PLAYER     'P'
+# define MAP_WALL		'1'
+# define MAP_FLOOR		'0'
+# define MAP_COLLECT	'C'
+# define MAP_EXIT		'E'
+# define MAP_PLAYER		'P'
 
 //	STRUCTURES
 typedef struct	s_img
@@ -53,11 +53,11 @@ typedef struct	s_img
 	void	*collectible;
 	void	*exit;
 	void	*player;
-	int	 	width; 
-	int	 	height;
-	int	 	bits_per_pixel;
-	int	 	line_length;
-	int	 	endian;
+	int		width; 
+	int		height;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
 }	t_img;
 
 typedef struct	s_map
@@ -68,6 +68,7 @@ typedef struct	s_map
 	int		walls;
 	int		floor;
 	int		collectibles;
+	int		player;
 	int		exits;
 	int		player_pos_x;
 	int		player_pos_y;
@@ -87,21 +88,27 @@ typedef struct s_game
 
 // HANDLE_ERRORS.C
 void	ft_error_message(char *message);
+void	gnl_clear(int fd);
 
 // INIT_GAME.C
 t_game	*ft_init_game(void);
-
-
-// INIT_WINDOW.C
-void	ft_init_wind(t_game *game);
-int	handle_input(int key, t_game *game);
+//void	ft_set_player_position(t_game *game);
 
 // INIT_MAP.C
 void	ft_map_init(t_game *game, char *map_path);
 void	ft_get_map_dimensions(t_game *game, char *map_path);
-int	ft_count_lines(char *map_path);
-void ft_allocate_map_memory(t_game *game);
-void ft_fill_map_content(t_game *game, char *map_path);
+int		ft_count_lines(char *map_path);
+void	ft_allocate_map_memory(t_game *game);
+void	ft_fill_map_content(t_game *game, char *map_path);
+
+// INIT_WINDOW.C
+void	ft_init_wind(t_game *game);
+int	handle_input(int key, t_game *game);
+int	handle_close(t_game *game);
+
+// MOVIMENTS.C
+void	ft_move_player(t_game *game, int direction);
+int		ft_validate_move(int pos_aux_x, int pos_aux_y, t_game *game);
 
 // RENDER_IMAGES.C
 void	ft_render_images(t_game *game);
@@ -109,9 +116,8 @@ void	ft_free_images(t_game *game);
 
 // VALIDATE_MAP.C
 void	ft_validate_map_extension(char *file);
-
-
-
+void	ft_validate_map_content(t_game *game);
+void	ft_check_line_content(char *str, int y, t_game *game);
 
 
 #endif

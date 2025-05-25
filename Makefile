@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/04/15 22:15:19 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/05/24 19:51:41 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,15 +20,16 @@ UNAME_S := $(shell uname -s)
 #									FILES  				     				   #
 #------------------------------------------------------------------------------#
 
-SRC_DIR		= src/
-OBJ_DIR		= .build/
-INCLUDES	= includes/
+SRC_DIR		= src
+OBJ_DIR		= .build
+INCLUDES	= includes
 HEADERS = $(INCLUDES)/so_long.h
 
 SRC_FILES	=	handle_errors.c	\
 				init_game.c		\
 				init_map.c		\
 				init_window.c		\
+				moviments.c			\
 				render_images.c	\
 				so_long.c		\
 				validate_map.c	\
