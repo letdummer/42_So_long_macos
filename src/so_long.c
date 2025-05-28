@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 21:27:28 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/04/16 16:09:10 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/05/27 17:55:15 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,11 @@ int	main(int ac, char **av)
 
 	// CHECK demais condicoes: qtd elementos, paredes, caminho valido
 	
-
 	// INIT janela grafica
 	ft_init_wind(game);
-
+	ft_render_images(game);
+	ft_map_images(game);
+	ft_display_moves(game);
 
 	mlx_key_hook(game->mlx_wind, handle_input, game);
 	mlx_hook(game->mlx_wind, 17, 0, handle_close, game);	// lida com fechar a janela no X
