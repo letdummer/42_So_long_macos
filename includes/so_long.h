@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/05/24 20:46:49 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/05/30 11:24:22 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 //#include <X11/keysym.h>				//descomentar para usar no linux
 #include <Carbon/Carbon.h>			// Include for event handling on macOS
 
-# define TILE_SIZE 32
-# define WIND_WIDTH 800
-# define WIND_HEIGHT 600
+# define TILE_SIZE 64
+# define WIND_WIDTH 1920
+# define WIND_HEIGHT 1080
 
 // COLORS
 # define RED "\033[0;91m"
@@ -38,12 +38,41 @@
 # define KEY_S		1
 # define KEY_D		2
 
+# define KEY_UP			126
+# define KEY_LEFT		123
+# define KEY_RIGHT		124
+# define KEY_DOWN		125
+
+// key codes for linux?
+//# define KEY_ESC  			65307
+//# define KEY_W				119
+//# define KEY_A				97
+//# define KEY_S				115
+//# define KEY_D				100
+
+//# define KEY_UP  			65362
+//# define KEY_LEFT  			65361
+//# define KEY_RIGHT 			65363
+//# define KEY_DOWN  			65364
+
+//# define KEY_Q				113
+
 // map element definition
 # define MAP_WALL		'1'
 # define MAP_FLOOR		'0'
 # define MAP_COLLECT	'C'
 # define MAP_EXIT		'E'
 # define MAP_PLAYER		'P'
+
+# define WALL_TOP_LEFT "assets/walls/tile_0_0.xpm"
+# define WALL_TOP_RIGHT "assets/walls/tile_0_2.xpm"
+# define WALL_BOTTOM_LEFT "assets/walls/tile_2_0.xpm"
+# define WALL_BOTTOM_RIGHT "assets/walls/tile_2_2.xpm"
+# define WALL_LEFT "assets/walls/tile_1_0.xpm"
+# define WALL_RIGHT "assets/walls/tile_1_2.xpm"
+# define WALL_TOP "assets/walls/tile_0_1.xpm"
+# define WALL_BOTTOM "assets/walls/tile_2_1.xpm"
+# define WALL "assets/walls/tile_1_1.xpm"
 
 //	STRUCTURES
 typedef struct	s_img
@@ -111,8 +140,12 @@ void	ft_move_player(t_game *game, int direction);
 int		ft_validate_move(int pos_aux_x, int pos_aux_y, t_game *game);
 
 // RENDER_IMAGES.C
-void	ft_render_images(t_game *game);
+void	ft_map_images(t_game *game);
 void	ft_free_images(t_game *game);
+void	ft_update_grid(t_game *game, int x, int y);
+void	ft_display_moves(t_game *game);
+void	ft_render_images(t_game *game);
+char    *ft_walls_tiles(t_game *game, int x, int y);
 
 // VALIDATE_MAP.C
 void	ft_validate_map_extension(char *file);

@@ -64,7 +64,7 @@ int	ft_validate_move(int pos_aux_x, int pos_aux_y, t_game *game)
 		{
 			ft_printf("WIN!\n");
 			//adicionar uma imagem de 'vitoria'
-			sleep(03);
+			sleep(01);
 			handle_close(game);
 		}
 		return (0);
