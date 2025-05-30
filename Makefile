@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/05/26 10:35:56 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/05/30 14:06:19 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ OBJ_DIR		= .build
 INCLUDES	= includes
 HEADERS = $(INCLUDES)/so_long.h
 
-SRC_FILES	=	handle_errors.c	\
+SRC_FILES	=	cleaning.c	\
 				init_game.c		\
 				init_map.c		\
 				init_window.c		\

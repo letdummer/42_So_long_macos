@@ -7,10 +7,7 @@ void	ft_move_player(t_game *game, int direction)
 
 	pos_aux_x = game->map.player_pos_x;
 	pos_aux_y = game->map.player_pos_y;
- 
-	ft_printf("\n\nCurrent position: [%d]", pos_aux_y);
-	ft_printf("[%d]\n", pos_aux_x);
-
+	game->images.last_direction = direction;
 	if (direction == KEY_W || direction == KEY_UP)
 		pos_aux_y += -1;
 	else if (direction == KEY_A || direction == KEY_LEFT)
@@ -19,28 +16,18 @@ void	ft_move_player(t_game *game, int direction)
 		pos_aux_y += 1;
 	else if (direction == KEY_D || direction == KEY_RIGHT)
 		pos_aux_x += 1;
-	
-		ft_printf("Attempting to move to: [%d]", pos_aux_y);
-		ft_printf("[%d]\n\n", pos_aux_x);
-
 	if (ft_validate_move(pos_aux_x, pos_aux_y, game))
 	{
-		// Clear old position
         game->map.grid[game->map.player_pos_y][game->map.player_pos_x] = MAP_FLOOR;
 		ft_update_grid(game, game->map.player_pos_x, game->map.player_pos_y);
-        
 		game->map.player_pos_x = pos_aux_x;
 		game->map.player_pos_y = pos_aux_y;
 		game->map.grid[pos_aux_y][pos_aux_x] = MAP_PLAYER;
 		ft_update_grid(game, pos_aux_x, pos_aux_y);
-        
+		game->images.step_count++;
         game->moves++;
-		mlx_put_image_to_window(game->mlx_connection, game->mlx_wind,
-			game->images.wall, 0, 0);
 		ft_display_moves(game);
-        ft_printf("MOVES: %d\n", game->moves);
 	}
-
 }
 
 int	ft_validate_move(int pos_aux_x, int pos_aux_y, t_game *game)

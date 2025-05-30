@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 12:14:10 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/05/28 11:42:35 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:26:22 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,8 @@ int	handle_input(int key, t_game *game)
 		|| key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT || key == KEY_RIGHT)
 	{
 		ft_move_player(game, key);
-		ft_printf("The %d key has been pressed\n", key);
+		//ft_printf("The %d key has been pressed\n", key);
 	}
-	ft_printf("The %d key has been pressed!!!\n", key);
 	return(0);
 }
 
-int	handle_close(t_game *game)
-{
-	mlx_destroy_window(game->mlx_connection, game->mlx_wind);
-	free(game->mlx_connection);
-	ft_printf("Game closed by closing the window.\n");
-	exit(0);
-}

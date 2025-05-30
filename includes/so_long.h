@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/05/30 11:24:22 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/05/30 18:08:14 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,18 @@
 # define WALL_BOTTOM "assets/walls/tile_2_1.xpm"
 # define WALL "assets/walls/tile_1_1.xpm"
 
+# define PLAYER_UP_1 "assets/player/player_up_1.xpm"
+# define PLAYER_UP_2 "assets/player/player_up_2.xpm"
+# define PLAYER_DOWN_1 "assets/player/player_down_1.xpm"
+# define PLAYER_DOWN_2 "assets/player/player_down_2.xpm"
+# define PLAYER_RIGHT_1 "assets/player/player_right_1.xpm"
+# define PLAYER_RIGHT_2 "assets/player/player_right_2.xpm"
+# define PLAYER_LEFT_1 "assets/player/player_left_1.xpm"
+# define PLAYER_LEFT_2 "assets/player/player_left_2.xpm"
+# define PLAYER "assets/player/player.xpm"
+
+
+
 //	STRUCTURES
 typedef struct	s_img
 {
@@ -81,7 +93,16 @@ typedef struct	s_img
 	void	*floor;
 	void	*collectible;
 	void	*exit;
-	void	*player;
+	void	*player_up_1;
+	void	*player_up_2;
+	void	*player_down_1;
+	void	*player_down_2;
+	void	*player_left_1;
+	void	*player_left_2;
+	void	*player_right_1;
+	void	*player_right_2;
+	int		last_direction;
+	int		step_count;
 	int		width; 
 	int		height;
 	int		bits_per_pixel;
@@ -115,13 +136,14 @@ typedef struct s_game
 	int		win;
 }	t_game;
 
-// HANDLE_ERRORS.C
+// CLEANING.C
 void	ft_error_message(char *message);
 void	gnl_clear(int fd);
+void	ft_free_images(t_game *game);
 
 // INIT_GAME.C
 t_game	*ft_init_game(void);
-//void	ft_set_player_position(t_game *game);
+void	ft_display_moves(t_game *game);
 
 // INIT_MAP.C
 void	ft_map_init(t_game *game, char *map_path);
@@ -141,11 +163,10 @@ int		ft_validate_move(int pos_aux_x, int pos_aux_y, t_game *game);
 
 // RENDER_IMAGES.C
 void	ft_map_images(t_game *game);
-void	ft_free_images(t_game *game);
 void	ft_update_grid(t_game *game, int x, int y);
-void	ft_display_moves(t_game *game);
 void	ft_render_images(t_game *game);
 char    *ft_walls_tiles(t_game *game, int x, int y);
+void	*ft_player_images(t_game *game);
 
 // VALIDATE_MAP.C
 void	ft_validate_map_extension(char *file);
