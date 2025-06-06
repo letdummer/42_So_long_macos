@@ -7,7 +7,6 @@ void	ft_map_init(t_game *game, char *map_path)
 	ft_allocate_map_memory(game);
 	ft_fill_map_content(game, map_path);
 	ft_validate_map_content(game);
-	//ft_set_player_position(game);
 }
 
 void	ft_get_map_dimensions(t_game *game, char *map_path)
@@ -86,17 +85,17 @@ void ft_fill_map_content(t_game *game, char *map_path)
 		ft_error_message("Error while reading the map content.");
 		while (i < game->map.height)
 		{
-		str = get_next_line(fd);
-		if (!str && i == 0)
-			ft_error_message("Empty file.");
-		if (!str)
-			ft_error_message("Map has fewer lines than expected.");
-		if (((int)ft_strlen(str) - (str[ft_strlen(str) - 1] == '\n')) != game->map.width)
-			ft_error_message("Map must be rectangular.");
-		ft_strlcpy(game->map.grid[i], str, game->map.width + 1);
-		free(str);
-		i++;
-	}
+			str = get_next_line(fd);
+			if (!str && i == 0)
+				ft_error_message("Empty file.");
+			if (!str)
+				ft_error_message("Map has fewer lines than expected.");
+			if (((int)ft_strlen(str) - (str[ft_strlen(str) - 1] == '\n')) != game->map.width)
+				ft_error_message("Map must be rectangular.");
+			ft_strlcpy(game->map.grid[i], str, game->map.width + 1);
+			free(str);
+			i++;
+		}
 	str = get_next_line(fd);
 	if (str)
 	{

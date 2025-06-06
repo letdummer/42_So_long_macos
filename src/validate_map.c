@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 21:27:25 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/05/25 11:53:44 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:39:56 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,10 @@ void	ft_validate_map_extension(char *file)
 void	ft_validate_map_content(t_game *game)
 {
 	int		y;
-	//int		x;
 
 	y = 0;
-	//x = 0;
 	while (y < game->map.height)
 	{
-		//if (game->map.grid[y][0])
 		ft_check_line_content(game->map.grid[y], y, game);
 		y++;
 	}
@@ -60,9 +57,6 @@ void	ft_check_line_content(char *str, int y, t_game *game)
 			game->map.player++;
 			game->map.player_pos_x = i;
 			game->map.player_pos_y = y;
-			ft_printf("Found player at position: [%d]", y); // Debug print
-			ft_printf("[%d]\n", i); // Debug print
-			printf("Found player at position: [%d][%d]\n", y, i); // Debug print
 		}
 		else if (str[i] != MAP_WALL && str[i] != MAP_FLOOR &&
 			str[i] != MAP_COLLECT && str[i] != MAP_EXIT &&
@@ -71,4 +65,3 @@ void	ft_check_line_content(char *str, int y, t_game *game)
 		i++;
 	}
 }
-

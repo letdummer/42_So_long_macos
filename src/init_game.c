@@ -21,24 +21,9 @@ t_game	*ft_init_game(void)
 	game->images.player_left_2 = NULL;
 	game->images.player_right_1 = NULL;
 	game->images.player_right_2 = NULL;
-
 	game->images.last_direction = KEY_D;
 	game->images.step_count = 0;
 	game->collected_items = 0;
 	game->moves = 0;
-
 	return (game);
-}
-
-void	ft_display_moves(t_game *game)
-{
-	char	*moves;
-	char	*tmp;
-
-	tmp = ft_itoa(game->moves);
-	moves = ft_strjoin("MOVES: ", tmp);
-	mlx_string_put(game->mlx_connection, game->mlx_wind,
-		10, 20, 0xFFFFFF, moves);
-	free (tmp);
-	free (moves);
 }

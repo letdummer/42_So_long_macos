@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/05/30 18:08:14 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/06/06 19:02:00 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@
 # define TILE_SIZE 64
 # define WIND_WIDTH 1920
 # define WIND_HEIGHT 1080
+# define HUD_HEIGHT 64
+# define HUD_COLOR 0x282828
+# define TEXT_COLOR 0xFFFFFF
 
 // COLORS
 # define RED "\033[0;91m"
@@ -72,7 +75,12 @@
 # define WALL_RIGHT "assets/walls/tile_1_2.xpm"
 # define WALL_TOP "assets/walls/tile_0_1.xpm"
 # define WALL_BOTTOM "assets/walls/tile_2_1.xpm"
-# define WALL "assets/walls/tile_1_1.xpm"
+# define FLOOR "assets/walls/tile_1_1.xpm"
+
+# define WALL "assets/walls/wall_bush.xpm"
+# define COLLECTIBLE "assets/collectible.xpm"
+# define EXIT "assets/exit.xpm"
+# define EXIT_OPEN "assets/exit_open.xpm"
 
 # define PLAYER_UP_1 "assets/player/player_up_1.xpm"
 # define PLAYER_UP_2 "assets/player/player_up_2.xpm"
@@ -83,8 +91,6 @@
 # define PLAYER_LEFT_1 "assets/player/player_left_1.xpm"
 # define PLAYER_LEFT_2 "assets/player/player_left_2.xpm"
 # define PLAYER "assets/player/player.xpm"
-
-
 
 //	STRUCTURES
 typedef struct	s_img
@@ -140,10 +146,10 @@ typedef struct s_game
 void	ft_error_message(char *message);
 void	gnl_clear(int fd);
 void	ft_free_images(t_game *game);
+int		handle_close(t_game *game);
 
 // INIT_GAME.C
 t_game	*ft_init_game(void);
-void	ft_display_moves(t_game *game);
 
 // INIT_MAP.C
 void	ft_map_init(t_game *game, char *map_path);
@@ -154,8 +160,8 @@ void	ft_fill_map_content(t_game *game, char *map_path);
 
 // INIT_WINDOW.C
 void	ft_init_wind(t_game *game);
-int	handle_input(int key, t_game *game);
-int	handle_close(t_game *game);
+int		handle_input(int key, t_game *game);
+void	ft_render_hud(t_game *game);
 
 // MOVIMENTS.C
 void	ft_move_player(t_game *game, int direction);
@@ -163,15 +169,16 @@ int		ft_validate_move(int pos_aux_x, int pos_aux_y, t_game *game);
 
 // RENDER_IMAGES.C
 void	ft_map_images(t_game *game);
-void	ft_update_grid(t_game *game, int x, int y);
 void	ft_render_images(t_game *game);
+void	ft_update_grid(t_game *game, int x, int y);
 char    *ft_walls_tiles(t_game *game, int x, int y);
 void	*ft_player_images(t_game *game);
+void	ft_render_wall(t_game *game, int x, int y);
+void	render_exit(t_game *game, int x, int y);
 
 // VALIDATE_MAP.C
 void	ft_validate_map_extension(char *file);
 void	ft_validate_map_content(t_game *game);
 void	ft_check_line_content(char *str, int y, t_game *game);
-
 
 #endif
