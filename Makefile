@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/06/10 18:13:26 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/06/10 22:14:38 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,7 @@ $(LIBFT_LIB) : $(LIBFT_DIR)
 #		git clone https://github.com/42Paris/minilibx-linux.git > /dev/null 2>&1; \
 #	fi
 #	@$(MAKE) -C $(MLX_DIR) --silent
-
+# https://cdn.intra.42.fr/document/document/32345/minilibx-linux.tgz
 $(MLX):
 	@if [ ! -d "$(MLX_DIR)" ]; then \
 		echo "Getting minilibx for macOS"; \
