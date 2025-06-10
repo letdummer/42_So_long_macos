@@ -1,23 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_map.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/09 14:15:38 by ldummer-          #+#    #+#             */
+/*   Updated: 2025/06/10 18:51:54 by ldummer-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
-
-
-void	ft_map_init(t_game *game, char *map_path)
-{
-	ft_get_map_dimensions(game, map_path);
-	ft_allocate_map_memory(game);
-	ft_fill_map_content(game, map_path);
-	ft_validate_map_content(game);
-}
 
 void	ft_get_map_dimensions(t_game *game, char *map_path)
 {
 	int		fd;
-	char	*str = NULL;
+	char	*str;
 
+	str = NULL;
 	fd = open(map_path, O_RDONLY);
 	if (fd < 0)
 		ft_error_message("Error while reading the map content.");
-	if (!(str = get_next_line(fd)))
+	str = get_next_line(fd);
+	if (!(str))
 		ft_error_message("Empty file.");
 	game->map.width = ft_strlen(str) - 1;
 	gnl_clear(fd);
@@ -33,27 +38,27 @@ int	ft_count_lines(char *map_path)
 	int		fd;
 	int		line_length;
 	char	*str;
-	
+
 	line_length = 0;
 	fd = open(map_path, O_RDONLY);
 	if (fd < 0)
 		ft_error_message("Error while reading the map content.");
 	str = get_next_line(fd);
- 	if (!str)
+	if (!str)
 		ft_error_message("Empty file.");
-	while(str)
+	while (str)
 	{
 		line_length++;
 		free(str);
 		str = get_next_line(fd);
 	}
 	close(fd);
-	return(line_length);
+	return (line_length);
 }
 
-void ft_allocate_map_memory(t_game *game)
+void	ft_allocate_map_memory(t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	game->map.grid = ft_calloc(game->map.height + 1, sizeof(char *));
@@ -73,29 +78,35 @@ void ft_allocate_map_memory(t_game *game)
 	}
 }
 
-void ft_fill_map_content(t_game *game, char *map_path)
+void	ft_validate_line(char *str, t_game *game, int i)
+{
+	if (!str && i == 0)
+		ft_error_message("Empty file.");
+	if (!str)
+		ft_error_message("Map has fewer lines than expected.");
+	if (((int)ft_strlen(str) - (str[ft_strlen(str) - 1] == '\n'))
+		!= game->map.width)
+		ft_error_message("Map must be rectangular.");
+}
+
+void	ft_fill_map_content(t_game *game, char *map_path)
 {
 	int		fd;
-	char	*str;
 	int		i;
+	char	*str;
 
 	i = 0;
 	fd = open(map_path, O_RDONLY);
 	if (fd < 0)
 		ft_error_message("Error while reading the map content.");
-		while (i < game->map.height)
-		{
-			str = get_next_line(fd);
-			if (!str && i == 0)
-				ft_error_message("Empty file.");
-			if (!str)
-				ft_error_message("Map has fewer lines than expected.");
-			if (((int)ft_strlen(str) - (str[ft_strlen(str) - 1] == '\n')) != game->map.width)
-				ft_error_message("Map must be rectangular.");
-			ft_strlcpy(game->map.grid[i], str, game->map.width + 1);
-			free(str);
-			i++;
-		}
+	while (i < game->map.height)
+	{
+		str = get_next_line(fd);
+		ft_validate_line(str, game, i);
+		ft_strlcpy(game->map.grid[i], str, game->map.width + 1);
+		free(str);
+		i++;
+	}
 	str = get_next_line(fd);
 	if (str)
 	{
@@ -104,4 +115,3 @@ void ft_fill_map_content(t_game *game, char *map_path)
 	}
 	close(fd);
 }
-

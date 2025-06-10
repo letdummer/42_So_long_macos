@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/06/06 19:02:00 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:53:20 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define SO_LONG_H
 
 // LIBRARIES
-#include "../minilibx-linux/mlx.h"
-#include "../libft/libft/libft.h"
-#include "../libft/ft_printf/libftprintf.h"
-#include "../libft/get_next_line/get_next_line.h"
+# include "../minilibx-linux/mlx.h"
+# include "../libft/libft/libft.h"
+# include "../libft/ft_printf/libftprintf.h"
+# include "../libft/get_next_line/get_next_line.h"
 
 //#include <X11/keysym.h>				//descomentar para usar no linux
-#include <Carbon/Carbon.h>			// Include for event handling on macOS
+# include <Carbon/Carbon.h>			// Include for event handling on macOS
 
 # define TILE_SIZE 64
 # define WIND_WIDTH 1920
@@ -93,11 +93,11 @@
 # define PLAYER "assets/player/player.xpm"
 
 //	STRUCTURES
-typedef struct	s_img
+typedef struct s_img
 {
 	void	*wall;
 	void	*floor;
-	void	*collectible;
+	void	*collect;
 	void	*exit;
 	void	*player_up_1;
 	void	*player_up_2;
@@ -109,14 +109,14 @@ typedef struct	s_img
 	void	*player_right_2;
 	int		last_direction;
 	int		step_count;
-	int		width; 
+	int		width;
 	int		height;
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
 }	t_img;
 
-typedef struct	s_map
+typedef struct s_map
 {
 	char	**grid;
 	int		width;
@@ -132,10 +132,10 @@ typedef struct	s_map
 
 typedef struct s_game
 {
-	void	*mlx_connection;
+	void	*mlx_connect;
 	void	*mlx_wind;
 	t_map	map;
-	t_img	images;
+	t_img	img;
 	int		collected_items;
 	int		moves;
 	int		game_over;
@@ -148,14 +148,11 @@ void	gnl_clear(int fd);
 void	ft_free_images(t_game *game);
 int		handle_close(t_game *game);
 
-// INIT_GAME.C
-t_game	*ft_init_game(void);
-
 // INIT_MAP.C
-void	ft_map_init(t_game *game, char *map_path);
 void	ft_get_map_dimensions(t_game *game, char *map_path);
 int		ft_count_lines(char *map_path);
 void	ft_allocate_map_memory(t_game *game);
+void	ft_validate_line(char *str, t_game *game, int i);
 void	ft_fill_map_content(t_game *game, char *map_path);
 
 // INIT_WINDOW.C
@@ -163,18 +160,31 @@ void	ft_init_wind(t_game *game);
 int		handle_input(int key, t_game *game);
 void	ft_render_hud(t_game *game);
 
-// MOVIMENTS.C
+// MOVEMENTS.C
+void	ft_update_player_pos(t_game *game, int new_x, int new_y);
 void	ft_move_player(t_game *game, int direction);
+int		ft_special_tiles(int aux_x, int aux_y, t_game *game);
+int		ft_handle_collectables(t_game *game);
 int		ft_validate_move(int pos_aux_x, int pos_aux_y, t_game *game);
 
 // RENDER_IMAGES.C
 void	ft_map_images(t_game *game);
-void	ft_render_images(t_game *game);
-void	ft_update_grid(t_game *game, int x, int y);
-char    *ft_walls_tiles(t_game *game, int x, int y);
-void	*ft_player_images(t_game *game);
 void	ft_render_wall(t_game *game, int x, int y);
 void	render_exit(t_game *game, int x, int y);
+void	ft_render_images(t_game *game);
+char	*ft_walls_tiles(t_game *game, int x, int y);
+
+// SO_LONG.C
+t_game	*ft_init_game(void);
+void	ft_map_init(t_game *game, char *map_path);
+void	ft_win(t_game *game);
+
+// UPDATE_IMAGES.C
+void	ft_update_grid(t_game *game, int x, int y);
+void	ft_update_exit(t_game *game, int x, int y);
+void	ft_update_wall(t_game *game, int x, int y);
+void	ft_load_player_images(t_game *game);
+void	*ft_player_images(t_game *game);
 
 // VALIDATE_MAP.C
 void	ft_validate_map_extension(char *file);

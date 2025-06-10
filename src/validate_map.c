@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/23 21:27:25 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/06/06 17:39:56 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:31:28 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ void	ft_validate_map_content(t_game *game)
 	if (game->map.player != 1)
 		ft_error_message("The map must have exactly one player.");
 	if (game->map.collectibles < 1)
-		ft_error_message("The map must have at least one collectible.");
+		ft_error_message("The map must have at least one collect.");
 }
 
 void	ft_check_line_content(char *str, int y, t_game *game)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < game->map.width)
@@ -52,15 +52,15 @@ void	ft_check_line_content(char *str, int y, t_game *game)
 			game->map.collectibles++;
 		else if (str[i] == MAP_EXIT)
 			game->map.exits++;
-		else if(str[i] == MAP_PLAYER)
-		{	
+		else if (str[i] == MAP_PLAYER)
+		{
 			game->map.player++;
 			game->map.player_pos_x = i;
 			game->map.player_pos_y = y;
 		}
-		else if (str[i] != MAP_WALL && str[i] != MAP_FLOOR &&
-			str[i] != MAP_COLLECT && str[i] != MAP_EXIT &&
-			str[i] != MAP_PLAYER)
+		else if (str[i] != MAP_WALL && str[i] != MAP_FLOOR
+			&& str[i] != MAP_COLLECT && str[i] != MAP_EXIT
+			&& str[i] != MAP_PLAYER)
 			ft_error_message("Invalid map.\nFound invalid characters.");
 		i++;
 	}
