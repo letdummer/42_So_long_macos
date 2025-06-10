@@ -6,7 +6,7 @@
 #    By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/21 17:06:37 by ldummer-          #+#    #+#              #
-#    Updated: 2025/04/15 22:15:19 by ldummer-         ###   ########.fr        #
+#    Updated: 2025/06/10 18:13:26 by ldummer-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,21 +20,20 @@ UNAME_S := $(shell uname -s)
 #									FILES  				     				   #
 #------------------------------------------------------------------------------#
 
-SRC_DIR		= src/
-OBJ_DIR		= .build/
-INCLUDES	= includes/
+SRC_DIR		= src
+OBJ_DIR		= .build
+INCLUDES	= includes
 HEADERS = $(INCLUDES)/so_long.h
 
-SRC_FILES	=	handle_errors.c	\
-				init_game.c		\
-				init_map.c		\
+SRC_FILES	=	cleaning.c			\
+				init_map.c			\
 				init_window.c		\
-				render_images.c	\
-				so_long.c		\
-				validate_map.c	\
+				movements.c			\
+				render_images.c		\
+				so_long.c			\
+				update_images.c		\
+				validate_map.c		\
 				
-
-
 SRC			= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 #OBJ			= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 OBJ			= $(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
@@ -46,7 +45,6 @@ LIBFT_LIB	= $(LIBFT_DIR)/libft.a
 
 #FT_PRINTF_DIR	= libft/ft_printf
 #FT_PRINTF_LIB	= $(FT_PRINTF_DIR)/libftprintf.a
-
 
 #MLX_DIR		= minilibx-linux
 #MLXFLAGS	= -L$(MLX_DIR) -lmlx
@@ -74,8 +72,6 @@ ifeq ($(UNAME_S),Darwin)
 	MLX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 	CFLAGS += -I$(MLX_DIR)
 endif
-
-
 
 #------------------------------------------------------------------------------#
 #								BASE		 		  						   #

@@ -1,55 +1,82 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_game.c                                        :+:      :+:    :+:   */
+/*   init_window.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 12:14:10 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/03/26 15:05:12 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/06/09 14:26:17 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-
 void	ft_init_wind(t_game *game)
-{	
-	game->mlx_connection = mlx_init();
-	if (game->mlx_connection == NULL)
+{
+	int	window_width;
+	int	window_height;
+
+	window_width = game->map.width * TILE_SIZE;
+	window_height = (game->map.height * TILE_SIZE) + HUD_HEIGHT;
+	if (window_width > WIND_WIDTH)
+		ft_error_message("Map is too wide. Maximum width is 30 tiles.");
+	if (window_height > WIND_HEIGHT)
+		ft_error_message("Map is too tall. Maximum height is 16 tiles.");
+	setenv("OBJC_DISABLE_INITIALIZE_FORK_SAFETY", "YES", 1);
+	game->mlx_connect = mlx_init();
+	if (game->mlx_connect == NULL)
 		ft_error_message("Error on the MLX");
-//		return(MLX_ERROR);
-	
-/* 	game->mlx_wind = mlx_new_window(game->mlx_connection,
-		500, 500, "so_long"); */
-	game->mlx_wind = mlx_new_window(game->mlx_connection,
-		WIND_WIDTH, WIND_HEIGHT, "so_long");
+	game->mlx_wind = mlx_new_window(game->mlx_connect,
+			window_width, window_height, "so_long");
 	if (game->mlx_wind == NULL)
 	{
-		//mlx_destroy_display(game->mlx_connection);
-		free(game->mlx_connection);
-		//return(MLX_ERROR);
+		free(game->mlx_connect);
+		ft_error_message("Error creating window");
 	}
-
-	void	*img;
-
-	img = mlx_new_image(game->mlx_connection, 500, 500);
-	if (img == NULL)
-		ft_error_message("Error creating the image.");
-	mlx_put_image_to_window(game->mlx_connection, game->mlx_wind, img, 0, 0);
 }
 
 int	handle_input(int key, t_game *game)
 {
-	if (key == KEY_ESC)	//53 is ESC key on macOS / XK_Escape is the ESC key in linux
+	if (key == KEY_ESC)
 	{
-		ft_printf("The %d key (ESC) has been pressed\n", key);
-		mlx_destroy_window(game->mlx_connection, game->mlx_wind);
-		//mlx_destroy_display(game->mlx_connection);
-		free(game->mlx_connection);
-		exit(1);
+		ft_printf("The game was closed by pressing the key (ESC).");
+		handle_close(game);
 	}
-	ft_printf("The %d key has been pressed\n", key);
-	return(0);
+	else if (key == KEY_W || key == KEY_A || key == KEY_S || key == KEY_D
+		|| key == KEY_UP || key == KEY_DOWN || key == KEY_LEFT
+		|| key == KEY_RIGHT)
+	{
+		ft_move_player(game, key);
+	}
+	return (0);
 }
 
+void	ft_render_hud(t_game *game)
+{
+	int		x;
+	int		y;
+	char	*collectibles;
+	char	*moves;
+
+	y = -1;
+	while (++y < HUD_HEIGHT)
+	{
+		x = 0;
+		while (++x < game->map.width * TILE_SIZE)
+		{
+			mlx_pixel_put(game->mlx_connect, game->mlx_wind,
+				x, y, HUD_COLOR);
+		}
+	}
+	moves = ft_strjoin("Moves: ", ft_itoa(game->moves));
+	collectibles = ft_strjoin("Collectibles: ",
+			ft_strjoin(ft_itoa(game->collected_items),
+				ft_strjoin("/", ft_itoa(game->map.collectibles))));
+	mlx_string_put(game->mlx_connect, game->mlx_wind,
+		10, 20, TEXT_COLOR, moves);
+	mlx_string_put(game->mlx_connect, game->mlx_wind,
+		10, 40, TEXT_COLOR, collectibles);
+	free(moves);
+	free(collectibles);
+}
