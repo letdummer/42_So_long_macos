@@ -6,7 +6,7 @@
 /*   By: ldummer- <ldummer-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/22 17:17:23 by ldummer-          #+#    #+#             */
-/*   Updated: 2025/06/10 21:53:20 by ldummer-         ###   ########.fr       */
+/*   Updated: 2025/06/16 19:41:34 by ldummer-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,6 @@
 # define TILE_SIZE 64
 # define WIND_WIDTH 1920
 # define WIND_HEIGHT 1080
-# define HUD_HEIGHT 64
-# define HUD_COLOR 0x282828
-# define TEXT_COLOR 0xFFFFFF
 
 // COLORS
 # define RED "\033[0;91m"
@@ -158,7 +155,7 @@ void	ft_fill_map_content(t_game *game, char *map_path);
 // INIT_WINDOW.C
 void	ft_init_wind(t_game *game);
 int		handle_input(int key, t_game *game);
-void	ft_render_hud(t_game *game);
+//void	ft_render_hud(t_game *game);
 
 // MOVEMENTS.C
 void	ft_update_player_pos(t_game *game, int new_x, int new_y);
@@ -190,5 +187,19 @@ void	*ft_player_images(t_game *game);
 void	ft_validate_map_extension(char *file);
 void	ft_validate_map_content(t_game *game);
 void	ft_check_line_content(char *str, int y, t_game *game);
+void	ft_check_exit(t_game *game);
+void	ft_find_exit_position(t_game *game, int *exit_x, int *exit_y);
 
+// VALIDATE_MAP_PATH.C
+void	ft_validate_map_path(t_game *game);
+char	**ft_create_temp_map(t_game *game);
+//void	ft_flood_fill(char **map, int x, int y, int *collectibles, int *exit_found);
+void	ft_flood_fill(t_game *game, char **map, int x, int y, int *collectibles, int *exit_found);
+
+//void	ft_validate_map_walls(t_game *game);
+
+int ft_is_surrounded(t_game *game, int x, int y);
+void ft_check_surrounded_objects(t_game *game);
+void ft_validate_map_borders(t_game *game);
+void ft_flood_fill_check(t_game *game);
 #endif
